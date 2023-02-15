@@ -1,7 +1,7 @@
-FROM python:3.6-alpine
-
-MAINTAINER jhao104 <j_hao104@163.com>
-
+FROM python:3.9.6-alpine3.14
+# 维护作者
+MAINTAINER xuefeng365 <120158568@qq.com>
+# 根目录
 WORKDIR /app
 
 COPY ./requirements.txt .
@@ -19,6 +19,6 @@ RUN apk add musl-dev gcc libxml2-dev libxslt-dev && \
 
 COPY . .
 
-EXPOSE 5010
+EXPOSE 5000
 
 ENTRYPOINT [ "sh", "start.sh" ]
