@@ -21,7 +21,7 @@ Spider ProxyPool 爬虫代理IP池
 * 付费代理推荐: [luminati-china](https://brightdata.grsm.io/proxyPool). 国外的亮数据BrightData（以前叫luminati）被认为是代理市场领导者，覆盖全球的7200万IP，大部分是真人住宅IP，成功率扛扛的。付费套餐多种，需要高质量代理IP的可以注册后联系中文客服，开通后有5美金赠送和教程指引(PS:用不明白的同学可以参考这个[使用教程](https://www.cnblogs.com/jhao/p/15611785.html))。
 
 
-### 运行项目
+[//]: # (### 运行项目)
 
 ##### 下载代码:
 
@@ -80,7 +80,7 @@ PROXY_FETCHER = [
 
 ```
 
-#### 启动项目:
+## 启动项目（以下是windows下使用教程）:
 这个项目总体分为两个部分：爬取代理 IP 和 取用代理 IP。
 ### 爬取代理 IP
 如果是windows本地爬取IP,需要先安装了redis,并启动redis服务(如图)
@@ -109,19 +109,6 @@ python proxyPool.py server
 
 ```
 
-#### Docker Image(docker操作启动)
-
-```bash
-docker pull jhao104/proxy_pool
-
-docker run --env DB_CONN=redis://:password@ip:port/0 -p 5010:5010 jhao104/proxy_pool:latest
-```
-#### docker-compose(docker操作启动)
-
-项目目录下运行:
-``` bash
-docker-compose up -d
-```
 
 #### 使用方法
 
@@ -169,3 +156,71 @@ def getHtml():
     delete_proxy(proxy)
     return None
 ```
+## 启动项目（以下是Linux系统 docker启动教程）:
+
+
+
+### 环境准备
+
+* Linux x64
+* docker or 本地
+* git 工具
+
+
+
+### 项目搭建
+
+
+#### docker 安装（如系统已经有 请跳过）
+
+1.  一键自动化安装:
+
+```bash
+curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+```
+
+2. 启动docker
+
+```bash
+sudo systemctl start docker
+sudo systemctl enable docker
+```
+
+3. docker切换镜像源
+
+```bash
+   sudo mkdir -p /etc/docker
+   sudo tee /etc/docker/daemon.json <<-'EOF'
+   {
+     "registry-mirrors": ["https://yytcclg8.mirror.aliyuncs.com"]
+   }
+   EOF
+   sudo systemctl daemon-reload
+   sudo systemctl restart docker
+```
+
+
+
+#### Redis 安装
+
+1.  利用docker安装redis
+
+```dockerfile
+sudo docker pull redis
+```
+
+2.  启动redis
+```bash
+sudo docker run -d --name redis -p 6379:6379 redis --requirepass
+```
+
+
+3. 拉取镜像
+```python
+docker pull spider_proxy_pool:v1
+
+docker run --env DB_CONN=redis://:@ip:6379/0 -p 5000:5000 spider_proxy_pool:v1
+```
+
+4. 查看效果(你的公网ip+5000端口，这里是假的)
+   222.222.222.222:5000
